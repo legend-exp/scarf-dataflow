@@ -92,25 +92,20 @@ rule gen_filelist:
         "src/legenddataflow/scripts/write_filelist.py"
 
 
-rule sort_data:
-    """Move DAQ data from sandbox to organized folder.
-
-    This rules moves the DAQ data from the unsorted sandbox directory to the
-    correct location in the `tier_raw` folder.
-    """
-    input:
-        patt.get_pattern_tier_daq_unsorted(config),
-    output:
-        patt.get_pattern_tier_daq(config),
-    shell:
-        "mv {input} {output}"
-
-
-use rule sort_data as sort_data_fcio with:
-    input:
-        patt.get_pattern_tier_daq_unsorted(config, extension="fcio"),
-    output:
-        patt.get_pattern_tier_daq(config, extension="fcio"),
-
-
+# rule sort_data:
+#     """Move DAQ data from sandbox to organized folder.
+#     This rules moves the DAQ data from the unsorted sandbox directory to the
+#     correct location in the `tier_raw` folder.
+#     """
+#     input:
+#         patt.get_pattern_tier_daq_unsorted(config),
+#     output:
+#         patt.get_pattern_tier_daq(config),
+#     shell:
+#         "mv {input} {output}"
+# use rule sort_data as sort_data_fcio with:
+#     input:
+#         patt.get_pattern_tier_daq_unsorted(config, extension="fcio"),
+#     output:
+#         patt.get_pattern_tier_daq(config, extension="fcio"),
 # vim: filetype=snakemake

@@ -19,6 +19,10 @@ def sandbox_path(setup):
         return None
 
 
+def tier_oldllamadaq_path(setup):
+    return setup["paths"]["tier_oldllamadaq"]
+
+
 def tier_daq_path(setup):
     return setup["paths"]["tier_daq"]
 

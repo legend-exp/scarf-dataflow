@@ -1,5 +1,5 @@
 # legend_metadata_version: main
-allow_none_par: false
+allow_none_par: true
 
 paths:
   sandbox_path: $_/sandbox
@@ -15,7 +15,8 @@ paths:
   detector_db: $_/inputs/hardware/detectors
 
   tier: $_/generated/tier
-  tier_daq: $_/generated/tier/daq
+  tier_oldllamadaq: $_/../../tier0
+  tier_daq: $_/../../tier1
   tier_raw: $_/generated/tier/raw
   tier_tcm: $_/generated/tier/tcm
   tier_dsp: $_/generated/tier/dsp
@@ -73,6 +74,18 @@ execenv:
   lngs:
     cmd: apptainer exec
     arg: /data2/public/prodenv/containers/legendexp_legend-base_latest_20241110203225.sif
+    env:
+      PRODENV: $PRODENV
+      NUMBA_CACHE_DIR: $_/.snakemake/numba-cache
+      LGDO_BOUNDSCHECK: "false"
+      DSPEED_BOUNDSCHECK: "false"
+      PYGAMA_PARALLEL: "false"
+      PYGAMA_FASTMATH: "false"
+      TQDM_DISABLE: "true"
+
+  sator:
+    cmd: apptainer exec
+    arg: /mnt/atlas01/projects/scarf/software/containers/legendexp_legend-software_latest_20241110215243.sif
     env:
       PRODENV: $PRODENV
       NUMBA_CACHE_DIR: $_/.snakemake/numba-cache

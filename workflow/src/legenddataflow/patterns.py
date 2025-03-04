@@ -12,6 +12,7 @@ from .utils import (
     plts_path,
     sandbox_path,
     tier_daq_path,
+    tier_oldllamadaq_path,
     tier_path,
     tier_raw_blind_path,
     tmp_log_path,
@@ -62,6 +63,16 @@ def get_pattern_tier_daq_unsorted(setup, extension="orca"):
         )
     else:
         return None
+
+
+def get_pattern_tier_oldllamadaq(setup):
+    return (
+        Path(f"{tier_oldllamadaq_path(setup)}")
+        / "{datatype}"
+        / "{period}"
+        / "{run}"
+        / ("{experiment}-{period}-{run}-{datatype}-{timestamp}.oldllamadaq")
+    )
 
 
 def get_pattern_tier_daq(setup, extension="orca"):

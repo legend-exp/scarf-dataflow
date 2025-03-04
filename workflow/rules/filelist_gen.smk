@@ -163,6 +163,7 @@ def build_filelist(
         ignore_keys = []
     if analysis_runs is None:
         analysis_runs = {}
+
     phy_filenames = []
     other_filenames = []
     for key in filekeys:
