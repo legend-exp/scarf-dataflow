@@ -78,6 +78,34 @@ rule build_raw_fcio:
         "{params.ro_input} {output}"
 
 
+rule build_raw_llamadaq:
+    """
+    This rule runs build_raw, it takes in a file.llamadaq and outputs a raw file
+    """
+    input:
+        get_pattern_tier_daq(config, extension="llamadaq"),
+    params:
+        timestamp="{timestamp}",
+        datatype="{datatype}",
+        ro_input=lambda _, input: ro(input),
+    output:
+        get_pattern_tier(config, "raw", check_in_cycle=check_in_cycle),
+    log:
+        get_pattern_log(config, "tier_raw", time),
+    group:
+        "tier-raw"
+    resources:
+        mem_swap=110,
+        runtime=300,
+    shell:
+        execenv_pyexe(config, "build-tier-raw-llamadaq") + "--log {log} "
+        f"--configs {ro(configs)} "
+        f"--chan-maps {ro(chan_maps)} "
+        "--datatype {params.datatype} "
+        "--timestamp {params.timestamp} "
+        "{params.ro_input} {output}"
+
+
 rule build_raw_mgdo:
     """
     This rule runs build_raw, it takes in a file.mgdo and outputs a raw file

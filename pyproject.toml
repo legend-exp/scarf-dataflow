@@ -24,13 +24,13 @@ write_to = "workflow/src/legenddataflow/_version.py"
 
 [project]
 name = "legend_dataflow"
-description = "Python package for processing LEGEND-200 data"
+description = "Python package for processing SCARF data"
 authors = [
     {name = "George Marshall", email = "george.marshall.20@ucl.ac.uk"},
     {name = "Luigi Pertoldi", email = "gipert@pm.me"},
 ]
 maintainers = [
-    {name = "The LEGEND Collaboration"},
+    {name = "TUM E15 Lehrstuel"},
 ]
 classifiers = [
     "Development Status :: 4 - Beta",
@@ -54,9 +54,8 @@ dependencies = [
     "dbetto>=1.2",
     "pygama>=2.0.5",
     "dspeed>=1.6",
-    "pylegendmeta>=1.2",
     "legend-pydataobj>=1.11.6",
-    "legend-daq2lh5>=1.4",
+    "legend-daq2lh5>=1.4.2",
     "pip",
 ]
 
@@ -93,6 +92,7 @@ build-tier-evt          = "legenddataflow.scripts.tier.evt:build_tier_evt"
 build-tier-hit          = "legenddataflow.scripts.tier.hit:build_tier_hit"
 build-tier-raw-blind    = "legenddataflow.scripts.tier.raw_blind:build_tier_raw_blind"
 build-tier-raw-mgdo     = "legenddataflow.scripts.tier.raw_mgdo:build_tier_raw_mgdo"
+build-tier-raw-llamadaq = "legenddataflow.scripts.tier.raw_llamadaq:build_tier_raw_llamadaq"
 build-tier-raw-fcio     = "legenddataflow.scripts.tier.raw_fcio:build_tier_raw_fcio"
 build-tier-raw-orca     = "legenddataflow.scripts.tier.raw_orca:build_tier_raw_orca"
 build-tier-skm          = "legenddataflow.scripts.tier.skm:build_tier_skm"
