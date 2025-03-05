@@ -96,7 +96,7 @@ def build_tier_raw_mgdo() -> None:
             tbl["timestamp"][tbl.loc] = (
                 ddata.GetTimeStamp() + ddata.GetDecimalTimeStamp() * 1e-9
             )
-            # tbl[][tbl.loc] = ddata.()
+            tbl["fadc_channel_id"][tbl.loc] = struckid
             tbl["daq_energy_sum"][tbl.loc] = event.GetETotal()
             tbl["time_of_first_hit_sec"][tbl.loc] = event.GetTime()
             tbl["event_type"][tbl.loc] = event.GetEventType()
@@ -147,6 +147,7 @@ def _tblid(id):
 def _make_lh5_channel_buffer(wf=None, wf_win=None, wf_pre=None, size=1024):
     col_dict = {
         "timestamp": Array(shape=(size,), dtype="float64", attrs={"units": "s"}),
+        "fadc_channel_id": Array(shape=(size,), dtype="int32"),
         "daq_energy_sum": Array(shape=(size,), dtype="float64"),
         "time_of_first_hit_sec": Array(shape=(size,), dtype="float64"),
         "event_type": Array(shape=(size,), dtype="int32"),
