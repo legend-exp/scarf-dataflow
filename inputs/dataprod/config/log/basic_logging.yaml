@@ -1,0 +1,89 @@
+version: 1
+disable_existing_loggers: false
+
+formatters:
+  simple:
+    format: >-
+      %(asctime)s - %(name)s - %(levelname)s - %(funcName)s -  %(lineno)d - %(message)s
+
+handlers:
+  # handler to redirect to stdout
+  console:
+    class: logging.StreamHandler
+    level: DEBUG
+    formatter: simple
+    stream: ext://sys.stdout
+
+  # example handler to redirect to a single file
+  file:
+    class: logging.FileHandler
+    level: DEBUG
+    formatter: simple
+    filename: .dataflow.log
+    mode: w
+
+  # use this handler if you want the messages to be handled by the dataflow.
+  # the filename will be overridden at runtime by the dataflow
+  dataflow:
+    class: logging.FileHandler
+    level: DEBUG
+    formatter: simple
+    filename: /tmp/__auto__
+    mode: a
+
+loggers:
+  # this logger is used by the dataflow scripts used in snakemake rules
+  prod:
+    level: DEBUG
+    handlers: [dataflow]
+    propagate: no
+
+  # loggers for our dependent packages
+  dbetto:
+    level: INFO
+    handlers: [dataflow]
+    propagate: no
+  numba:
+    level: INFO
+    handlers: [dataflow]
+    propagate: no
+  parse:
+    level: INFO
+    handlers: [dataflow]
+    propagate: no
+  pygama:
+    level: DEBUG
+    handlers: [dataflow]
+    propagate: no
+  pygama.hit:
+    level: INFO
+    handlers: [dataflow]
+    propagate: no
+  lgdo:
+    level: INFO
+    handlers: [dataflow]
+    propagate: no
+  dspeed:
+    level: INFO
+    handlers: [dataflow]
+    propagate: no
+  h5py:
+    level: INFO
+    handlers: [dataflow]
+    propagate: no
+  matplotlib:
+    level: INFO
+    handlers: [dataflow]
+    propagate: no
+  legendmeta:
+    level: INFO
+    handlers: [dataflow]
+    propagate: no
+  daq2lh5:
+    level: INFO
+    handlers: [dataflow]
+    propagate: no
+
+root:
+  level: DEBUG
+  handlers: [dataflow]

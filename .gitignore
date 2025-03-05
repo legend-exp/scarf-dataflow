@@ -17,7 +17,6 @@ workflow/src/legenddataflow/_version.py
 uv.lock
 
 #prodenv_stuff
-inputs
 software
 generated
 
