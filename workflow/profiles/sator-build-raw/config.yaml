@@ -1,4 +1,4 @@
-cores: 30
+cores: 10
 configfile: dataflow-config.yaml
 snakefile: ./workflow/Snakefile-build-raw
 keep-going: true
