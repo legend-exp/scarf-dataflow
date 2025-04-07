@@ -1,0 +1,13 @@
+LLAMAEventDecoder:
+  __output_table_name__:
+    key_list: ["__key_list__"]
+    out_stream: "{filekey}"
+    proc_spec:
+      compression:
+        waveform_presummed/values: RadwareSigcompress(codec_shift=-32768)
+        waveform_windowed/values: RadwareSigcompress(codec_shift=-32768)
+
+LLAMAHeaderDecoder:
+  "extra/llama_header":
+    key_list: ["*"]
+    out_stream: "{filekey}"

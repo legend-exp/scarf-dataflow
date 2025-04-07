@@ -1,0 +1,15 @@
+snakemake_rules:
+  tier_raw_llamadaq:
+    inputs:
+      settings: $_/tier/raw/sp04-p%-r%-T%-all-raw_settings.yaml
+      out_spec: $_/tier/raw/llamadaq/sp04-p%-r%-T%-all-raw_config.yaml
+    options:
+      logging: $_/log/basic_logging.yaml
+      logger: prod
+
+  tier_tcm:
+    inputs:
+      config: $_/tier/tcm/sp01-p%-r%-T%-all-config.yaml
+    options:
+      logging: $_/log/basic_logging.yaml
+      logger: prod

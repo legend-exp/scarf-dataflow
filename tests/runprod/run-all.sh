@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+shopt -s nullglob
+
 # IMPORTANT: this script must be executed from the legend-dataflow directory
 
 ./tests/runprod/install.sh

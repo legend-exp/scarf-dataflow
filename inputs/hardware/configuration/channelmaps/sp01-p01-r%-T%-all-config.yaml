@@ -1,0 +1,75 @@
+BEGe:
+  name: BEGe
+  system: geds
+  location:
+    string: 1
+    position: 1
+  daq:
+    struckid: 0
+    rawid: 1
+
+IC:
+  name: IC
+  system: geds
+  location:
+    string: 1
+    position: 2
+  daq:
+    struckid: 1
+    rawid: 2
+
+S001:
+  name: S001
+  system: spms
+  daq:
+    struckid: 2
+    rawid: 3
+
+S002:
+  name: S002
+  system: spms
+  daq:
+    struckid: 3
+    rawid: 4
+
+S003:
+  name: S003
+  system: spms
+  daq:
+    struckid: 4
+    rawid: 5
+
+S004:
+  name: S004
+  system: spms
+  daq:
+    struckid: 5
+    rawid: 6
+
+S005:
+  name: S005
+  system: spms
+  daq:
+    struckid: 6
+    rawid: 7
+
+S006:
+  name: S006
+  system: spms
+  daq:
+    struckid: 7
+    rawid: 8
+
+S007:
+  name: S001
+  system: spms
+  daq:
+    struckid: 8
+    rawid: 9
+
+PULS01:
+  name: PULS01
+  system: puls
+  daq:
+    struckid: 9
+    rawid: 10
