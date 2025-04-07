@@ -148,7 +148,7 @@ rule build_daq_mgdo:
         datatype="{datatype}",
         ro_input=lambda _, input: ro(input),
     output:
-        get_pattern_tier_daq(config, extension="mgdo"),
+        temp(get_pattern_tier_daq(config, extension="mgdo")),
     log:
         get_pattern_log(config, "tier_daq", time),
     group:
@@ -156,4 +156,4 @@ rule build_daq_mgdo:
     shell:
         "apptainer exec --cleanenv "
         "/mnt/atlas01/projects/scarf/software/containers/gerda-sw-all_v7.0.0.sif "
-        "Raw2MGDO -c Struck -f {output} {input} &> {log}"
+        "Raw2MGDO -m 1000 -c Struck -f {output} {input} &> {log}"

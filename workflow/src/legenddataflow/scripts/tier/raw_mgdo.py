@@ -54,6 +54,7 @@ def build_tier_raw_mgdo() -> None:
     event = tree.event
 
     found_struckids = set()
+    # for each channel, create a buffer table
     for i in range(event.GetNWaveforms()):
         struckid = event.GetDigitizerData(i).GetID()
         found_struckids.add(struckid)
@@ -71,6 +72,7 @@ def build_tier_raw_mgdo() -> None:
                 wf=event.GetWaveform(i),
             )
 
+        # insert it in our dictionary
         data_dict[_tblid(chmap[struckid].daq.rawid)] = tbl
 
     if any(ch not in found_struckids for ch in chmap):
@@ -90,6 +92,7 @@ def build_tier_raw_mgdo() -> None:
         for i in range(event.GetNWaveforms()):
             ddata = event.GetDigitizerData(i)
             struckid = ddata.GetID()
+            # find the table in data_dict this data corresponds to
             tbl_name = _tblid(chmap[struckid].daq.rawid)
             tbl = data_dict[tbl_name]
 
@@ -104,7 +107,7 @@ def build_tier_raw_mgdo() -> None:
             tbl["daq_crate"][tbl.loc] = ddata.GetCrate()
             tbl["daq_card"][tbl.loc] = ddata.GetCard()
             tbl["daq_channel"][tbl.loc] = ddata.GetChannel()
-            tbl["clock_freq_hz"][tbl.loc] = ddata.GetClockFrequency()
+            tbl["clock_freq_hz"][tbl.loc] = 1e9 * ddata.GetClockFrequency()
             tbl["bit_resolution"][tbl.loc] = ddata.GetBitResolution()
             tbl["nr_of_channels"][tbl.loc] = ddata.GetNChannels()
             tbl["event_number"][tbl.loc] = ddata.GetEventNumber()
@@ -166,11 +169,12 @@ def _make_lh5_channel_buffer(wf=None, wf_win=None, wf_pre=None, size=1024):
         "is_inverted": Array(shape=(size,), dtype="bool"),
     }
 
-    common_kwargs = {
-        "size": size,
-        "t0": Array(shape=(size,), dtype=int, attrs={"units": "s"}),
-        "dt": Array(shape=(size,), dtype=int, attrs={"units": "s"}),
-    }
+    def _make_common_kwargs():
+        return {
+            "size": size,
+            "t0": Array(shape=(size,), dtype=int, attrs={"units": "ns"}),
+            "dt": Array(shape=(size,), dtype=int, attrs={"units": "ns"}),
+        }
 
     wf_values_attrs = {"compression": RadwareSigcompress(codec_shift=-32768)}
 
@@ -178,7 +182,7 @@ def _make_lh5_channel_buffer(wf=None, wf_win=None, wf_pre=None, size=1024):
         col_dict["waveform"] = WaveformTable(
             wf_len=wf.GetLength(),
             dtype="uint16",
-            **common_kwargs,
+            **_make_common_kwargs(),
         )
         col_dict["waveform"].values.attrs |= wf_values_attrs
     else:
@@ -188,7 +192,7 @@ def _make_lh5_channel_buffer(wf=None, wf_win=None, wf_pre=None, size=1024):
             col_dict[name] = WaveformTable(
                 wf_len=wf.GetLength(),
                 dtype="uint16",
-                **common_kwargs,
+                **_make_common_kwargs(),
             )
             col_dict[name].values.attrs |= wf_values_attrs
 
