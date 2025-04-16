@@ -1,5 +1,5 @@
-BEGe:
-  name: BEGe
+V03422:
+  name: V03422
   system: geds
   location:
     string: 1
@@ -7,16 +7,6 @@ BEGe:
   daq:
     struckid: 0
     rawid: 1
-
-IC:
-  name: IC
-  system: geds
-  location:
-    string: 1
-    position: 2
-  daq:
-    struckid: 1
-    rawid: 2
 
 S001:
   name: S001
