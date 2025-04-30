@@ -113,7 +113,7 @@ def build_tier_raw_blind() -> None:
 
     # make some temp file to write the output to before renaming it
     rng = np.random.default_rng()
-    rand_num = f"{rng.integers(0,99999):05d}"
+    rand_num = f"{rng.integers(0, 99999):05d}"
     temp_output = f"{args.output}.{rand_num}"
     Path(temp_output).parent.mkdir(parents=True, exist_ok=True)
 

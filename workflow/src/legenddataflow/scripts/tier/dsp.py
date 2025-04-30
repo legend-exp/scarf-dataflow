@@ -70,10 +70,10 @@ def build_tier_dsp() -> None:
     # if the dictionary only contains one __default__ key, build the channel
     # list from the (processable) channel map and assign the default config
     if list(chan_cfg_map.keys()) == ["__default__"]:
-        chan_cfg_map = {
-            chan: chan_cfg_map.__default__
-            for chan in chan_map.group("analysis.processable")[True].map("name")
-        }
+        chan_cfg_map = dict.fromkeys(
+            chan_map.group("analysis.processable")[True].map("name"),
+            chan_cfg_map.__default__,
+        )
 
     # now construct the dictionary of DSP configs for build_dsp()
     dsp_cfg_tbl_dict = {}
@@ -141,7 +141,7 @@ def build_tier_dsp() -> None:
                     outputs[entry]["channels"].append(channel.split("/")[0])
                     in_dict = True
             if in_dict is False:
-                outputs[f"group{len(list(outputs))+1}"] = {
+                outputs[f"group{len(list(outputs)) + 1}"] = {
                     "channels": [channel.split("/")[0]],
                     "fields": output,
                 }
@@ -167,7 +167,7 @@ def build_tier_dsp() -> None:
                     outputs[entry]["channels"].append(channel.split("/")[0])
                     in_dict = True
             if in_dict is False:
-                outputs[f"group{len(list(outputs))+1}"] = {
+                outputs[f"group{len(list(outputs)) + 1}"] = {
                     "channels": [channel.split("/")[0]],
                     "fields": output,
                 }
