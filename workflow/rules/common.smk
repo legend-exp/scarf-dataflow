@@ -113,8 +113,12 @@ def get_search_pattern(tier):
     """
     This func gets the search pattern for the relevant tier passed.
     """
-    if tier in ("daq", "raw"):
-        return patt.get_pattern_tier_oldllamadaq(config)
+    if tier == "daq":
+        raise NotImplementedError()
+        # return patt.get_pattern_tier_daq_unsorted(config, extension="*")
+        # return patt.get_pattern_tier_oldllamadaq(config)
+    elif tier == "raw":
+        return patt.get_pattern_tier_daq(config, extension="*")
     else:
         return patt.get_pattern_tier(config, "raw", check_in_cycle=False)
 
