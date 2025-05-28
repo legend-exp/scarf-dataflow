@@ -174,6 +174,8 @@ def build_filelist(
         files = glob.glob(fn_glob_pattern)
         for f in files:
             _key = FileKey.get_filekey_from_pattern(f, search_pattern)
+            if _key is None:
+                raise RuntimeError(f"File {f} does not match pattern {search_pattern}")
             if _key.name in ignore_keys:
                 pass
             else:
