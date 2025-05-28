@@ -39,50 +39,50 @@ def build_filedb() -> None:
 
     # augment dataframe with earliest timestamp found in file
 
-    default = np.finfo("float64").max
-    timestamps = np.zeros(len(fdb.df), dtype="float64")
+    # default = np.finfo("float64").max
+    # timestamps = np.zeros(len(fdb.df), dtype="float64")
 
-    for i, row in enumerate(fdb.df.itertuples()):
-        store = lh5.LH5Store(
-            base_path=f"{fdb.data_dir}/{fdb.tier_dirs['raw']}", keep_open=True
-        )
+    # for i, row in enumerate(fdb.df.itertuples()):
+    #     store = lh5.LH5Store(
+    #         base_path=f"{fdb.data_dir}/{fdb.tier_dirs['raw']}", keep_open=True
+    #     )
 
-        # list of first timestamps for each channel
-        loc_timestamps = np.full(
-            len(row.raw_tables), fill_value=default, dtype="float64"
-        )
+    #     # list of first timestamps for each channel
+    #     loc_timestamps = np.full(
+    #         len(row.raw_tables), fill_value=default, dtype="float64"
+    #     )
 
-        msg = f"finding first timestamp in {fdb.data_dir}/{fdb.tier_dirs['raw']}/{row.raw_file}"
-        log.info(msg)
+    #     msg = f"finding first timestamp in {fdb.data_dir}/{fdb.tier_dirs['raw']}/{row.raw_file}"
+    #     log.info(msg)
 
-        found = False
-        for j, table in enumerate(row.raw_tables):
-            try:
-                loc_timestamps[j] = store.read(
-                    fdb.table_format["raw"].format(ch=table) + "/timestamp",
-                    row.raw_file.strip("/"),
-                    n_rows=1,
-                )[0][0]
-                found = True
-            except KeyError:
-                pass
+    #     found = False
+    #     for j, table in enumerate(row.raw_tables):
+    #         try:
+    #             loc_timestamps[j] = store.read(
+    #                 fdb.table_format["raw"].format(ch=table) + "/time_since_run_start",
+    #                 row.raw_file.strip("/"),
+    #                 n_rows=1,
+    #             )[0][0]
+    #             found = True
+    #         except KeyError:
+    #             pass
 
-            if found and args.assume_nonsparse:
-                break
+    #         if found and args.assume_nonsparse:
+    #             break
 
-        if (loc_timestamps == default).all() or not found:
-            msg = "something went wrong! no valid first timestamp found"
-            raise RuntimeError(msg)
+    #     if (loc_timestamps == default).all() or not found:
+    #         msg = "something went wrong! no valid first timestamp found"
+    #         raise RuntimeError(msg)
 
-        timestamps[i] = np.min(loc_timestamps)
+    #     timestamps[i] = np.min(loc_timestamps)
 
-        msg = f"found {timestamps[i]}"
-        log.info(msg)
+    #     msg = f"found {timestamps[i]}"
+    #     log.info(msg)
 
-        if timestamps[i] < 0 or timestamps[i] > 4102444800:
-            msg = "something went wrong! timestamp does not make sense"
-            raise RuntimeError(msg)
+    #     if timestamps[i] < 0 or timestamps[i] > 4102444800:
+    #         msg = "something went wrong! timestamp does not make sense"
+    #         raise RuntimeError(msg)
 
-    fdb.df["first_timestamp"] = timestamps
+    # fdb.df["first_timestamp"] = timestamps
 
     fdb.to_disk(args.output, wo_mode="of")
