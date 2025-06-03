@@ -163,6 +163,7 @@ def build_filelist(
         ignore_keys = []
     if analysis_runs is None:
         analysis_runs = {}
+    ignore_suffixes = [".log", ".mac"] # allows to store DAQ logs & macros together with the binary outputs
 
     phy_filenames = []
     other_filenames = []
@@ -174,7 +175,11 @@ def build_filelist(
         files = glob.glob(fn_glob_pattern)
         for f in files:
             _key = FileKey.get_filekey_from_pattern(f, search_pattern)
-            if _key.name in ignore_keys:
+            if Path(f).suffix in ignore_suffixes:
+                pass
+            elif _key is None:
+                raise RuntimeError(f"File {f} does not match pattern {search_pattern}")
+            elif _key.name in ignore_keys:
                 pass
             else:
                 if tier == "blind" and _key.datatype in blind_datatypes:

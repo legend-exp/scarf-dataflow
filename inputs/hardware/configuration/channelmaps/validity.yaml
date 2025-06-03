@@ -1,4 +1,4 @@
-- valid_from: 20231026T180002Z
+- valid_from: 20231012T163000Z
   mode: reset
   apply:
     - sp01-p%-r%-T%-all-config.yaml
