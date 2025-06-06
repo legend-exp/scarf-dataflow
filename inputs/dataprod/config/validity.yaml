@@ -3,6 +3,11 @@
   apply:
     - sp01-p01-r%-T%-all-config.yaml
 
+- valid_from: 20240805T173003Z
+  mode: reset
+  apply:
+    - sp02-p01-r%-T%-all-config.yaml
+
 - valid_from: 20250214T173002Z
   mode: reset
   apply:
