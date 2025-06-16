@@ -2,9 +2,7 @@ import argparse
 import logging
 from pathlib import Path
 
-import numpy as np
 from dbetto.catalog import Props
-from lgdo import lh5
 from pygama.flow.file_db import FileDB
 
 
