@@ -163,7 +163,10 @@ def build_filelist(
         ignore_keys = []
     if analysis_runs is None:
         analysis_runs = {}
-    ignore_suffixes = [".log", ".mac"] # allows to store DAQ logs & macros together with the binary outputs
+    ignore_suffixes = [
+        ".log",
+        ".mac",
+    ]  # allows to store DAQ logs & macros together with the binary outputs
 
     phy_filenames = []
     other_filenames = []

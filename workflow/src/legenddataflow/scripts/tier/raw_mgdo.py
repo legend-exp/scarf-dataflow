@@ -146,6 +146,7 @@ def build_tier_raw_mgdo() -> None:
             store.write(tbl, tbl_name, args.output, wo_mode="append", n_rows=tbl.loc)
             tbl.clear()
 
+
 def _tblid(id):
     return f"ch{id:03d}/raw"
 
