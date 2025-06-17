@@ -73,6 +73,9 @@ def build_tier_raw_mgdo() -> None:
             )
 
         # insert it in our dictionary
+        if struckid not in chmap:
+            raise RuntimeError(f"struckid {struckid} not specified in "
+                               "channel map but present in data.")
         data_dict[_tblid(chmap[struckid].daq.rawid)] = tbl
 
     if any(ch not in found_struckids for ch in chmap):
