@@ -144,7 +144,11 @@ def build_tier_raw_mgdo() -> None:
             if tbl.is_full():
                 store.write(tbl, tbl_name, args.output, wo_mode="append")
                 tbl.clear()
-        # write the remaining table entries when the buffer is not completely filled
+    # write the remaining table entries when the buffer is not completely filled
+    # do this outside of the event loop and loop over all used channels here
+    for channel in chmap.values():
+        tbl_name = _tblid(channel.daq.rawid)
+        tbl = data_dict[tbl_name]
         if tbl.loc != 0:
             store.write(tbl, tbl_name, args.output, wo_mode="append", n_rows=tbl.loc)
             tbl.clear()
