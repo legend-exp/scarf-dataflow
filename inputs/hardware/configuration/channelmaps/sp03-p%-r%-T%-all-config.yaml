@@ -8,6 +8,16 @@ V03422:
     struckid: 0
     rawid: 1
 
+Unknown1:
+  name: Unknown1
+  system: geds
+  location: 
+    string: 1
+    position: 2
+  daq:
+    struckid: 1
+    rawid: 2
+
 S001:
   name: S001
   system: spms
