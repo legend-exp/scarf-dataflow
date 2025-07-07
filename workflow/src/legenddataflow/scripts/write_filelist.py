@@ -1,4 +1,4 @@
-# ruff: noqa: F821, T201
+# ruff: noqa: T201
 from pathlib import Path
 
 from snakemake.script import snakemake  # snakemake > 8.16

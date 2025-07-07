@@ -54,10 +54,10 @@ def build_tier_hit() -> None:
     # if the mapping only contains one __default__ key, build the channel
     # list from the (processable) channel map and assign the default config
     if list(chan_cfg_map.keys()) == ["__default__"]:
-        chan_cfg_map = {
-            chan: chan_cfg_map.__default__
-            for chan in chan_map.group("analysis.processable")[True].map("name")
-        }
+        chan_cfg_map = dict.fromkeys(
+            chan_map.group("analysis.processable")[True].map("name"),
+            chan_cfg_map.__default__,
+        )
 
     # now construct the dictionary of hit configs for build_hit()
     channel_dict = {}
@@ -95,7 +95,7 @@ def build_tier_hit() -> None:
                 hit_outputs[entry]["channels"].append(channel)
                 in_dict = True
         if in_dict is False:
-            hit_outputs[f"group{len(list(hit_outputs))+1}"] = {
+            hit_outputs[f"group{len(list(hit_outputs)) + 1}"] = {
                 "channels": [channel],
                 "fields": output,
             }
