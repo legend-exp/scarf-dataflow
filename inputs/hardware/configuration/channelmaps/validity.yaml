@@ -17,3 +17,8 @@
   mode: reset
   apply:
     - sp04-p%-r%-T%-all-config.yaml
+
+- valid_from: 20251126T153001Z
+  mode: reset
+  apply:
+    - sp04-p05-r%-T%-all-config.yaml
