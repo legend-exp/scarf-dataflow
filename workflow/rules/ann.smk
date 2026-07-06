@@ -18,9 +18,6 @@ rule build_ann:
         pars_file=lambda wildcards: get_input_par_file(
             setup=config, wildcards=wildcards, tier="ann", name="cuts"
         ),
-    params:
-        timestamp="{timestamp}",
-        datatype="{datatype}",
     output:
         tier_file=get_pattern_tier(config, "ann", check_in_cycle=check_in_cycle),
         db_file=get_pattern_pars_tmp(config, "ann_db"),
@@ -31,6 +28,9 @@ rule build_ann:
     resources:
         runtime=300,
         mem_swap=lambda wildcards: 25 if wildcards.datatype == "cal" else 15,
+    params:
+        timestamp="{timestamp}",
+        datatype="{datatype}",
     shell:
         execenv_pyexe(config, "build-tier-dsp") + "--log {log} "
         "--configs {configs} "
@@ -50,9 +50,6 @@ rule build_pan:
         pars_file=lambda wildcards: get_input_par_file(
             setup=config, wildcards=wildcards, tier="ann", name="cuts"
         ),
-    params:
-        timestamp="{timestamp}",
-        datatype="{datatype}",
     output:
         tier_file=get_pattern_tier(config, "pan", check_in_cycle=check_in_cycle),
         db_file=get_pattern_pars_tmp(config, "pan_db"),
@@ -63,6 +60,9 @@ rule build_pan:
     resources:
         runtime=300,
         mem_swap=lambda wildcards: 25 if wildcards.datatype == "cal" else 15,
+    params:
+        timestamp="{timestamp}",
+        datatype="{datatype}",
     shell:
         execenv_pyexe(config, "build-tier-dsp") + "--log {log} "
         "--configs {configs} "

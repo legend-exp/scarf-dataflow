@@ -37,17 +37,17 @@ rule build_pht:
     output:
         tier_file=get_pattern_tier(config, "pht", check_in_cycle=check_in_cycle),
         db_file=get_pattern_pars_tmp(config, "pht_db"),
-    params:
-        timestamp="{timestamp}",
-        datatype="{datatype}",
-        tier="pht",
-        ro_input=lambda _, input: {k: ro(v) for k, v in input.items()},
     log:
         get_pattern_log(config, "tier_pht", time),
     group:
         "tier-pht"
     resources:
         runtime=300,
+    params:
+        timestamp="{timestamp}",
+        datatype="{datatype}",
+        tier="pht",
+        ro_input=lambda _, input: {k: ro(v) for k, v in input.items()},
     shell:
         execenv_pyexe(config, "build-tier-hit") + f"--configs {ro(configs)} "
         "--metadata {meta} "
