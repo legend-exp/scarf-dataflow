@@ -43,11 +43,11 @@ rule autogen_output:
         gen_output="{label}-{tier}.gen",
         summary_log=log_path(config) + "/summary-{label}-{tier}-" + timestamp + ".log",
         warning_log=log_path(config) + "/warning-{label}-{tier}-" + timestamp + ".log",
+    threads: min(workflow.cores, 64)
     params:
         valid_keys_path=os.path.join(pars_path(config), "valid_keys"),
         filedb_path=os.path.join(pars_path(config), "filedb"),
         setup=lambda wildcards: config,
         basedir=workflow.basedir,
-    threads: min(workflow.cores, 64)
     script:
         "../src/legenddataflow/scripts/complete_run.py"

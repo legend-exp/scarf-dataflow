@@ -37,10 +37,6 @@ rule build_dsp:
     input:
         raw_file=patt.get_pattern_tier(config, "raw", check_in_cycle=False),
         pars_files=ancient(lambda wildcards: _make_input_pars_file(wildcards)),
-    params:
-        timestamp="{timestamp}",
-        datatype="{datatype}",
-        ro_input=lambda _, input: {k: ro(v) for k, v in input.items()},
     output:
         tier_file=patt.get_pattern_tier(config, "dsp", check_in_cycle=check_in_cycle),
         db_file=patt.get_pattern_pars_tmp(config, "dsp_db"),
@@ -51,6 +47,10 @@ rule build_dsp:
     resources:
         runtime=300,
         mem_swap=lambda wildcards: 35 if wildcards.datatype == "cal" else 25,
+    params:
+        timestamp="{timestamp}",
+        datatype="{datatype}",
+        ro_input=lambda _, input: {k: ro(v) for k, v in input.items()},
     shell:
         execenv_pyexe(config, "build-tier-dsp") + "--log {log} "
         "--tier dsp "

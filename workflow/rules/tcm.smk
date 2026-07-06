@@ -15,10 +15,6 @@ from legenddataflow.execenv import execenv_pyexe
 rule build_tier_tcm:
     input:
         get_pattern_tier(config, "raw", check_in_cycle=False),
-    params:
-        timestamp="{timestamp}",
-        datatype="{datatype}",
-        input=lambda _, input: ro(input),
     output:
         get_pattern_tier(config, "tcm", check_in_cycle=check_in_cycle),
     log:
@@ -28,6 +24,10 @@ rule build_tier_tcm:
     resources:
         runtime=300,
         mem_swap=20,
+    params:
+        timestamp="{timestamp}",
+        datatype="{datatype}",
+        input=lambda _, input: ro(input),
     shell:
         execenv_pyexe(config, "build-tier-tcm") + "--log {log} "
         f"--configs {ro(configs)} "
@@ -42,14 +42,6 @@ rule build_pulser_ids:
         os.path.join(
             filelist_path(config), "all-{experiment}-{period}-{run}-cal-tcm.filelist"
         ),
-    params:
-        input=lambda _, input: ro(input),
-        timestamp="{timestamp}",
-        datatype="cal",
-        channel="{channel}",
-        rawid=lambda wildcards: metadata.channelmap(wildcards.timestamp, system="cal")[
-            wildcards.channel
-        ].daq.rawid,
     output:
         pulser=temp(get_pattern_pars_tmp_channel(config, "tcm", "pulser_ids")),
     log:
@@ -58,6 +50,14 @@ rule build_pulser_ids:
         "tier-tcm"
     resources:
         runtime=300,
+    params:
+        input=lambda _, input: ro(input),
+        timestamp="{timestamp}",
+        datatype="cal",
+        channel="{channel}",
+        rawid=lambda wildcards: metadata.channelmap(wildcards.timestamp, system="cal")[
+            wildcards.channel
+        ].daq.rawid,
     shell:
         execenv_pyexe(config, "par-geds-tcm-pulser") + "--log {log} "
         f"--configs {ro(configs)} "

@@ -22,13 +22,6 @@ rule build_pars_dsp_tau_geds:
             filelist_path(config), "all-{experiment}-{period}-{run}-cal-raw.filelist"
         ),
         pulser=get_pattern_pars_tmp_channel(config, "tcm", "pulser_ids"),
-    params:
-        timestamp="{timestamp}",
-        datatype="cal",
-        channel="{channel}",
-        raw_table_name=lambda wildcards: get_table_name(
-            metadata, config, "cal", wildcards.timestamp, wildcards.channel, "raw"
-        ),
     output:
         decay_const=temp(get_pattern_pars_tmp_channel(config, "dsp", "decay_constant")),
         plots=temp(get_pattern_plts_tmp_channel(config, "dsp", "decay_constant")),
@@ -38,6 +31,13 @@ rule build_pars_dsp_tau_geds:
         "par-dsp"
     resources:
         runtime=300,
+    params:
+        timestamp="{timestamp}",
+        datatype="cal",
+        channel="{channel}",
+        raw_table_name=lambda wildcards: get_table_name(
+            metadata, config, "cal", wildcards.timestamp, wildcards.channel, "raw"
+        ),
     shell:
         execenv_pyexe(config, "par-geds-dsp-tau") + "--configs {configs} "
         "--log {log} "
@@ -59,13 +59,6 @@ rule build_pars_evtsel_geds:
         pulser_file=get_pattern_pars_tmp_channel(config, "tcm", "pulser_ids"),
         database=get_pattern_pars_tmp_channel(config, "dsp", "decay_constant"),
         raw_cal_curve=get_blinding_curve_file,
-    params:
-        timestamp="{timestamp}",
-        datatype="cal",
-        channel="{channel}",
-        raw_table_name=lambda wildcards: get_table_name(
-            metadata, config, "cal", wildcards.timestamp, wildcards.channel, "raw"
-        ),
     output:
         peak_file=temp(get_pattern_pars_tmp_channel(config, "dsp", "peaks", "lh5")),
     log:
@@ -75,6 +68,13 @@ rule build_pars_evtsel_geds:
     resources:
         runtime=300,
         mem_swap=70,
+    params:
+        timestamp="{timestamp}",
+        datatype="cal",
+        channel="{channel}",
+        raw_table_name=lambda wildcards: get_table_name(
+            metadata, config, "cal", wildcards.timestamp, wildcards.channel, "raw"
+        ),
     shell:
         execenv_pyexe(config, "par-geds-dsp-evtsel") + "--configs {configs} "
         "--log {log} "
@@ -97,13 +97,6 @@ rule build_pars_dsp_nopt_geds:
         ),
         database=get_pattern_pars_tmp_channel(config, "dsp", "decay_constant"),
         inplots=get_pattern_plts_tmp_channel(config, "dsp", "decay_constant"),
-    params:
-        timestamp="{timestamp}",
-        datatype="cal",
-        channel="{channel}",
-        raw_table_name=lambda wildcards: get_table_name(
-            metadata, config, "cal", wildcards.timestamp, wildcards.channel, "raw"
-        ),
     output:
         dsp_pars_nopt=temp(
             get_pattern_pars_tmp_channel(config, "dsp", "noise_optimization")
@@ -115,6 +108,13 @@ rule build_pars_dsp_nopt_geds:
         "par-dsp"
     resources:
         runtime=300,
+    params:
+        timestamp="{timestamp}",
+        datatype="cal",
+        channel="{channel}",
+        raw_table_name=lambda wildcards: get_table_name(
+            metadata, config, "cal", wildcards.timestamp, wildcards.channel, "raw"
+        ),
     shell:
         execenv_pyexe(config, "par-geds-dsp-nopt") + "--database {input.database} "
         "--configs {configs} "
@@ -138,13 +138,6 @@ rule build_pars_dsp_dplms_geds:
         peak_file=get_pattern_pars_tmp_channel(config, "dsp", "peaks", "lh5"),
         database=get_pattern_pars_tmp_channel(config, "dsp", "noise_optimization"),
         inplots=get_pattern_plts_tmp_channel(config, "dsp", "noise_optimization"),
-    params:
-        timestamp="{timestamp}",
-        datatype="cal",
-        channel="{channel}",
-        raw_table_name=lambda wildcards: get_table_name(
-            metadata, config, "cal", wildcards.timestamp, wildcards.channel, "raw"
-        ),
     output:
         dsp_pars=temp(get_pattern_pars_tmp_channel(config, "dsp", "dplms")),
         lh5_path=temp(get_pattern_pars_tmp_channel(config, "dsp", extension="lh5")),
@@ -155,6 +148,13 @@ rule build_pars_dsp_dplms_geds:
         "par-dsp"
     resources:
         runtime=300,
+    params:
+        timestamp="{timestamp}",
+        datatype="cal",
+        channel="{channel}",
+        raw_table_name=lambda wildcards: get_table_name(
+            metadata, config, "cal", wildcards.timestamp, wildcards.channel, "raw"
+        ),
     shell:
         execenv_pyexe(config, "par-geds-dsp-dplms") + "--peak-file {input.peak_file} "
         "--fft-raw-filelist {input.fft_files} "
@@ -177,13 +177,6 @@ rule build_pars_dsp_eopt_geds:
         peak_file=get_pattern_pars_tmp_channel(config, "dsp", "peaks", "lh5"),
         decay_const=get_pattern_pars_tmp_channel(config, "dsp", "dplms"),
         inplots=get_pattern_plts_tmp_channel(config, "dsp", "dplms"),
-    params:
-        timestamp="{timestamp}",
-        datatype="cal",
-        channel="{channel}",
-        raw_table_name=lambda wildcards: get_table_name(
-            metadata, config, "cal", wildcards.timestamp, wildcards.channel, "raw"
-        ),
     output:
         dsp_pars=temp(get_pattern_pars_tmp_channel(config, "dsp_eopt")),
         qbb_grid=temp(
@@ -196,6 +189,13 @@ rule build_pars_dsp_eopt_geds:
         "par-dsp"
     resources:
         runtime=300,
+    params:
+        timestamp="{timestamp}",
+        datatype="cal",
+        channel="{channel}",
+        raw_table_name=lambda wildcards: get_table_name(
+            metadata, config, "cal", wildcards.timestamp, wildcards.channel, "raw"
+        ),
     shell:
         execenv_pyexe(config, "par-geds-dsp-eopt") + "--log {log} "
         "--configs {configs} "
@@ -221,9 +221,6 @@ rule build_svm_dsp_geds:
                 setup=config, wildcards=wildcards, tier="dsp", name="svm_hyperpars"
             )
         ).replace("hyperpars.yaml", "train.lh5"),
-    params:
-        timestamp="{timestamp}",
-        datatype="cal",
     output:
         dsp_pars=get_pattern_pars(config, "dsp", "svm", "pkl"),
     log:
@@ -232,6 +229,9 @@ rule build_svm_dsp_geds:
         "par-dsp-svm"
     resources:
         runtime=300,
+    params:
+        timestamp="{timestamp}",
+        datatype="cal",
     shell:
         execenv_pyexe(config, "par-geds-dsp-svm-build") + "--log {log} "
         "--train-data {input.train_data} "
