@@ -11,7 +11,7 @@ P00661C:
 Unknown1:
   name: Unknown1
   system: geds
-  location: 
+  location:
     string: 1
     position: 2
   daq:
