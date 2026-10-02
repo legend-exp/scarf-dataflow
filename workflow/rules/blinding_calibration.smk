@@ -19,15 +19,11 @@ rule build_blinding_calibration:
     """
     Runs a check on the daqenergy of the calibration run that the blinding curve given still applies,
     if so creates a file whose existence will be checked by the raw blinding before proceeding with blinding the phy data
+
     """
     input:
         files=Path(filelist_path(config))
         / "all-{experiment}-{period}-{run}-cal-raw.filelist",
-    params:
-        timestamp="{timestamp}",
-        datatype="cal",
-        channel="{channel}",
-        meta=meta,
     output:
         par_file=temp(get_pattern_pars_tmp_channel(config, "raw_blindcal")),
         plot_file=temp(get_pattern_plts_tmp_channel(config, "raw_blindcal")),
@@ -37,6 +33,11 @@ rule build_blinding_calibration:
         "par-raw-blinding"
     resources:
         runtime=300,
+    params:
+        timestamp="{timestamp}",
+        datatype="cal",
+        channel="{channel}",
+        meta=meta,
     shell:
         execenv_pyexe(config, "par-geds-raw-blindcal") + "--log {log} "
         "--datatype {params.datatype} "

@@ -83,7 +83,6 @@ localrules:
 
 onstart:
     print("INFO: starting workflow")
-
     # Make sure some packages are initialized before we begin to avoid race conditions
     # https://numba.readthedocs.io/en/stable/developer/caching.html#cache-sharing
     if not workflow.touch:
@@ -91,7 +90,6 @@ onstart:
             execenv.execenv_pyexe(config, "python")
             + "-c 'import dspeed, lgdo, matplotlib, pygama'"
         )
-
         # Log parameter catalogs in validity files
     hit_par_cat_file = Path(utils.pars_path(config)) / "hit" / "validity.yaml"
     if hit_par_cat_file.is_file():
@@ -101,7 +99,6 @@ onstart:
         hit_par_catalog.write_to(hit_par_cat_file)
     except NameError:
         print("No hit parameter catalog found")
-
     pht_par_cat_file = Path(utils.pars_path(config)) / "pht" / "validity.yaml"
     if pht_par_cat_file.is_file():
         pht_par_cat_file.unlink()
@@ -110,7 +107,6 @@ onstart:
         pht_par_catalog.write_to(pht_par_cat_file)
     except NameError:
         print("No pht parameter catalog found")
-
     dsp_par_cat_file = Path(utils.pars_path(config)) / "dsp" / "validity.yaml"
     if dsp_par_cat_file.is_file():
         dsp_par_cat_file.unlink()
@@ -119,7 +115,6 @@ onstart:
         dsp_par_catalog.write_to(dsp_par_cat_file)
     except NameError:
         print("No dsp parameter catalog found")
-
     psp_par_cat_file = Path(utils.pars_path(config)) / "psp" / "validity.yaml"
     if psp_par_cat_file.is_file():
         psp_par_cat_file.unlink()
@@ -135,7 +130,6 @@ onsuccess:
     for file in files:
         if os.path.isfile(file):
             os.remove(file)
-
     files = glob.glob(os.path.join(utils.filelist_path(config), "*"))
     for file in files:
         if os.path.isfile(file):

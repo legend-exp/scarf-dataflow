@@ -29,8 +29,6 @@ def build_filedb() -> None:
     logging.getLogger("lgdo").setLevel(logging.INFO)
     logging.getLogger("h5py._conv").setLevel(logging.INFO)
 
-    log = logging.getLogger(__name__)
-
     fdb = FileDB(config, scan=False)
     fdb.scan_files([args.scan_path])
     fdb.scan_tables_columns(dir_files_conform=True)

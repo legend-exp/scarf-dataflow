@@ -13,7 +13,6 @@ from legenddataflow.patterns import (
 )
 from legenddataflow.execenv import execenv_pyexe
 
-
 pht_fast_rules = {}
 for key, dataset in part.datasets.items():
     for partition in dataset.keys():
@@ -52,14 +51,6 @@ for key, dataset in part.datasets.items():
                     key,
                     tier="pht",
                     name="energy_cal",
-                ),
-            wildcard_constraints:
-                channel=part.get_wildcard_constraints(partition, key),
-            params:
-                datatype="cal",
-                channel="{channel}" if key == "default" else key,
-                timestamp=part.get_timestamp(
-                    pht_par_catalog, partition, key, tier="pht"
                 ),
             output:
                 hit_pars=[
@@ -100,11 +91,19 @@ for key, dataset in part.datasets.items():
                     time,
                     name="par_pht_fast",
                 ),
+            wildcard_constraints:
+                channel=part.get_wildcard_constraints(partition, key),
             group:
                 "par-pht"
             resources:
                 mem_swap=len(part.get_filelists(partition, key, intier)) * 12,
                 runtime=300,
+            params:
+                datatype="cal",
+                channel="{channel}" if key == "default" else key,
+                timestamp=part.get_timestamp(
+                    pht_par_catalog, partition, key, tier="pht"
+                ),
             shell:
                 execenv_pyexe(config, "par-geds-pht-fast") + "--log {log} "
                 "--configs {configs} "
@@ -124,7 +123,6 @@ for key, dataset in part.datasets.items():
 
         set_last_rule_name(workflow, f"{key}-{partition}-par_pht_fast")
         slow_rule = workflow._rules[f"{key}-{partition}-build_pht_lq_calibration"]
-
         if key in pht_fast_rules:
             pht_fast_rules[key] += [list(workflow.rules)[-1], slow_rule]
         else:
@@ -145,10 +143,6 @@ rule par_pht_fast:
             config, "pht", "energy_cal_objects", extension="pkl"
         ),
         inplots=get_pattern_plts_tmp_channel(config, "pht", "energy_cal"),
-    params:
-        datatype="cal",
-        channel="{channel}",
-        timestamp="{timestamp}",
     output:
         hit_pars=temp(get_pattern_pars_tmp_channel(config, "pht")),
         partcal_results=temp(
@@ -162,6 +156,10 @@ rule par_pht_fast:
     resources:
         mem_swap=50,
         runtime=300,
+    params:
+        datatype="cal",
+        channel="{channel}",
+        timestamp="{timestamp}",
     shell:
         execenv_pyexe(config, "par-geds-pht-fast") + "--log {log} "
         "--configs {configs} "

@@ -73,6 +73,11 @@ def build_tier_raw_mgdo() -> None:
             )
 
         # insert it in our dictionary
+        if struckid not in chmap:
+            msg = (
+                f"struckid {struckid} not specified in channel map but present in data."
+            )
+            raise RuntimeError(msg)
         data_dict[_tblid(chmap[struckid].daq.rawid)] = tbl
 
     if any(ch not in found_struckids for ch in chmap):
@@ -141,7 +146,11 @@ def build_tier_raw_mgdo() -> None:
             if tbl.is_full():
                 store.write(tbl, tbl_name, args.output, wo_mode="append")
                 tbl.clear()
-        # write the remaining table entries when the buffer is not completely filled
+    # write the remaining table entries when the buffer is not completely filled
+    # do this outside of the event loop and loop over all used channels here
+    for channel in chmap.values():
+        tbl_name = _tblid(channel.daq.rawid)
+        tbl = data_dict[tbl_name]
         if tbl.loc != 0:
             store.write(tbl, tbl_name, args.output, wo_mode="append", n_rows=tbl.loc)
             tbl.clear()

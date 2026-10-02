@@ -1,5 +1,5 @@
-V03422:
-  name: V03422
+BN0002B:
+  name: BN0002B
   system: geds
   location:
     string: 1
@@ -8,8 +8,8 @@ V03422:
     struckid: 0
     rawid: 1
 
-Unknown1:
-  name: Unknown1
+VNICARO:
+  name: VNICARO
   system: geds
   location:
     string: 1
@@ -59,17 +59,3 @@ S006:
   daq:
     struckid: 7
     rawid: 8
-
-S007:
-  name: S001
-  system: spms
-  daq:
-    struckid: 8
-    rawid: 9
-
-PULS01:
-  name: PULS01
-  system: puls
-  daq:
-    struckid: 9
-    rawid: 10

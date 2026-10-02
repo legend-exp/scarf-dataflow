@@ -23,14 +23,6 @@ for key, dataset in part.datasets.items():
         rule:
             input:
                 phy_files=part.get_filelists(partition, key, intier, datatype="phy"),
-            wildcard_constraints:
-                channel=part.get_wildcard_constraints(partition, key),
-            params:
-                datatype="cal",
-                channel="{channel}" if key == "default" else key,
-                timestamp=part.get_timestamp(
-                    pht_par_catalog, partition, key, tier="pht"
-                ),
             output:
                 hit_pars=[
                     temp(file)
@@ -61,11 +53,19 @@ for key, dataset in part.datasets.items():
                     time,
                     name="par_pht_qc_phy",
                 ),
+            wildcard_constraints:
+                channel=part.get_wildcard_constraints(partition, key),
             group:
                 "par-pht"
             resources:
                 mem_swap=len(part.get_filelists(partition, key, intier)) * 20,
                 runtime=300,
+            params:
+                datatype="cal",
+                channel="{channel}" if key == "default" else key,
+                timestamp=part.get_timestamp(
+                    pht_par_catalog, partition, key, tier="pht"
+                ),
             shell:
                 execenv_pyexe(config, "par-geds-pht-qc-phy") + "--log {log} "
                 "--configs {configs} "
@@ -77,7 +77,6 @@ for key, dataset in part.datasets.items():
                 "--phy-files {input.phy_files}"
 
         set_last_rule_name(workflow, f"{key}-{partition}-build_pht_qc_phy")
-
         if key in qc_pht_rules:
             qc_pht_rules[key].append(list(workflow.rules)[-1])
         else:
@@ -92,10 +91,6 @@ rule build_pht_qc_phy:
             filelist_path(config),
             "all-{experiment}-{period}-{run}-phy-" + f"{intier}.filelist",
         ),
-    params:
-        datatype="cal",
-        channel="{channel}",
-        timestamp="{timestamp}",
     output:
         hit_pars=temp(get_pattern_pars_tmp_channel(config, "pht", "qcphy")),
         plot_file=temp(get_pattern_plts_tmp_channel(config, "pht", "qcphy")),
@@ -106,6 +101,10 @@ rule build_pht_qc_phy:
     resources:
         mem_swap=60,
         runtime=300,
+    params:
+        datatype="cal",
+        channel="{channel}",
+        timestamp="{timestamp}",
     shell:
         execenv_pyexe(config, "par-geds-pht-qc-phy") + "--log {log} "
         "--configs {configs} "
