@@ -32,13 +32,6 @@ rule build_qc:
         ),
         pulser=get_pattern_pars_tmp_channel(config, "tcm", "pulser_ids"),
         overwrite_files=lambda wildcards: get_overwrite_file("hit", wildcards),
-    params:
-        timestamp="{timestamp}",
-        datatype="cal",
-        channel="{channel}",
-        dsp_table_name=lambda wildcards: get_table_name(
-            metadata, config, "cal", wildcards.timestamp, wildcards.channel, "dsp"
-        ),
     output:
         qc_file=temp(get_pattern_pars_tmp_channel(config, "hit", "qc")),
         plot_file=temp(get_pattern_plts_tmp_channel(config, "hit", "qc")),
@@ -48,6 +41,13 @@ rule build_qc:
         "par-hit"
     resources:
         runtime=300,
+    params:
+        timestamp="{timestamp}",
+        datatype="cal",
+        channel="{channel}",
+        dsp_table_name=lambda wildcards: get_table_name(
+            metadata, config, "cal", wildcards.timestamp, wildcards.channel, "dsp"
+        ),
     shell:
         execenv_pyexe(config, "par-geds-hit-qc") + "--log {log} "
         "--datatype {params.datatype} "
@@ -77,13 +77,6 @@ rule build_energy_calibration:
         ),
         inplots=get_pattern_plts_tmp_channel(config, "hit", "qc"),
         in_hit_dict=get_pattern_pars_tmp_channel(config, "hit", "qc"),
-    params:
-        timestamp="{timestamp}",
-        datatype="cal",
-        channel="{channel}",
-        dsp_table_name=lambda wildcards: get_table_name(
-            metadata, config, "cal", wildcards.timestamp, wildcards.channel, "dsp"
-        ),
     output:
         ecal_file=temp(get_pattern_pars_tmp_channel(config, "hit", "energy_cal")),
         results_file=temp(
@@ -98,6 +91,13 @@ rule build_energy_calibration:
         "par-hit"
     resources:
         runtime=300,
+    params:
+        timestamp="{timestamp}",
+        datatype="cal",
+        channel="{channel}",
+        dsp_table_name=lambda wildcards: get_table_name(
+            metadata, config, "cal", wildcards.timestamp, wildcards.channel, "dsp"
+        ),
     shell:
         execenv_pyexe(config, "par-geds-hit-ecal") + "--log {log} "
         "--datatype {params.datatype} "
@@ -128,13 +128,6 @@ rule build_aoe_calibration:
             config, "hit", "energy_cal_objects", extension="pkl"
         ),
         inplots=get_pattern_plts_tmp_channel(config, "hit", "energy_cal"),
-    params:
-        timestamp="{timestamp}",
-        datatype="cal",
-        channel="{channel}",
-        dsp_table_name=lambda wildcards: get_table_name(
-            metadata, config, "cal", wildcards.timestamp, wildcards.channel, "dsp"
-        ),
     output:
         hit_pars=temp(get_pattern_pars_tmp_channel(config, "hit", "aoe_cal")),
         aoe_results=temp(
@@ -149,6 +142,13 @@ rule build_aoe_calibration:
         "par-hit"
     resources:
         runtime=300,
+    params:
+        timestamp="{timestamp}",
+        datatype="cal",
+        channel="{channel}",
+        dsp_table_name=lambda wildcards: get_table_name(
+            metadata, config, "cal", wildcards.timestamp, wildcards.channel, "dsp"
+        ),
     shell:
         execenv_pyexe(config, "par-geds-hit-aoe") + "--log {log} "
         "--configs {configs} "
@@ -178,13 +178,6 @@ rule build_lq_calibration:
             config, "hit", "aoe_cal_objects", extension="pkl"
         ),
         inplots=get_pattern_plts_tmp_channel(config, "hit", "aoe_cal"),
-    params:
-        timestamp="{timestamp}",
-        datatype="cal",
-        channel="{channel}",
-        dsp_table_name=lambda wildcards: get_table_name(
-            metadata, config, "cal", wildcards.timestamp, wildcards.channel, "dsp"
-        ),
     output:
         hit_pars=temp(get_pattern_pars_tmp_channel(config, "hit")),
         lq_results=temp(
@@ -197,6 +190,13 @@ rule build_lq_calibration:
         "par-hit"
     resources:
         runtime=300,
+    params:
+        timestamp="{timestamp}",
+        datatype="cal",
+        channel="{channel}",
+        dsp_table_name=lambda wildcards: get_table_name(
+            metadata, config, "cal", wildcards.timestamp, wildcards.channel, "dsp"
+        ),
     shell:
         execenv_pyexe(config, "par-geds-hit-lq") + "--log {log} "
         "--configs {configs} "

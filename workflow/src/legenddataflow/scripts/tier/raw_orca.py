@@ -101,7 +101,7 @@ def build_tier_raw_orca() -> None:
         Props.add_to(all_config, muon_config)
 
     rng = np.random.default_rng()
-    rand_num = f"{rng.integers(0,99999):05d}"
+    rand_num = f"{rng.integers(0, 99999):05d}"
     temp_output = f"{args.output}.{rand_num}"
 
     build_raw(args.input, out_spec=all_config, filekey=temp_output, **settings)

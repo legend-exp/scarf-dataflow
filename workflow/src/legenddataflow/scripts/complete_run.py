@@ -82,7 +82,7 @@ def check_log_files(log_path, output_file, gen_output, warning_file=None):
                 )
     walk = list(os.walk(log_path))
     for path, _, _ in walk[::-1]:
-        if len(os.listdir(path)) == 0:
+        if not any(Path(path).iterdir()):
             Path(path).rmdir()
 
 
@@ -98,23 +98,23 @@ def readable_json(dic, ncol=6, indent=4):
         for key, item in dic.items():
             if isinstance(item, list):
                 out_string += (
-                    f'{add_spaces(indent_level+indent)}"{key}"'
+                    f'{add_spaces(indent_level + indent)}"{key}"'
                     + ": [\n"
-                    + f"{add_spaces(2*indent+indent_level)}"
+                    + f"{add_spaces(2 * indent + indent_level)}"
                 )
                 for i, _item in enumerate(item):
                     if i > 0 and (i) % ncol == 0:
-                        out_string += f"\n{add_spaces(2*indent+indent_level)}"
+                        out_string += f"\n{add_spaces(2 * indent + indent_level)}"
                     out_string += f'"{_item}", '
                 out_string = out_string[:-2]
-                out_string += "\n" + f"{add_spaces(indent+indent_level)}" + "],\n"
+                out_string += "\n" + f"{add_spaces(indent + indent_level)}" + "],\n"
 
             elif isinstance(item, dict):
-                out_string += f'{add_spaces(indent+indent_level)}"{key}": ' + "{\n"
+                out_string += f'{add_spaces(indent + indent_level)}"{key}": ' + "{\n"
                 out_string = reformat_dict(
                     item, out_string, indent_level=indent_level + indent, ncol=ncol
                 )
-                out_string += "\n" + f"{add_spaces(indent_level+indent)}" + "},\n"
+                out_string += "\n" + f"{add_spaces(indent_level + indent)}" + "},\n"
         return out_string[:-2]
 
     out_string = "{\n"
@@ -146,7 +146,7 @@ def build_valid_keys(input_files_regex, output_dir):
     for key in list(key_dict):
         dtype = key.split("-")[-1]
         out_file = (
-            Path(output_dir) / f'{key.replace(f"-{dtype}", "")}-valid_{dtype}.json'
+            Path(output_dir) / f"{key.replace(f'-{dtype}', '')}-valid_{dtype}.json"
         )
         out_file.parent.mkdir(parents=True, exist_ok=True)
         if Path(out_file).is_file():
@@ -172,7 +172,7 @@ def find_gen_runs(gen_tier_path):
     paths_concat = gen_tier_path.glob("*/*/*.lh5")
     # use the directories to build a datatype/period/run string
     runs_concat = {
-        "/".join([str(p).split("-")[3]] + str(p).split("-")[1:3]) for p in paths_concat
+        "/".join([str(p).split("-")[3], *str(p).split("-")[1:3]]) for p in paths_concat
     }
 
     return runs | runs_concat
