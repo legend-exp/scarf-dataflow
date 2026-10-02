@@ -28,10 +28,6 @@ rule build_raw_orca:
     """
     input:
         get_pattern_tier_daq(config, extension="orca"),
-    params:
-        timestamp="{timestamp}",
-        datatype="{datatype}",
-        ro_input=lambda _, input: ro(input),
     output:
         get_pattern_tier(config, "raw", check_in_cycle=check_in_cycle),
     log:
@@ -41,6 +37,10 @@ rule build_raw_orca:
     resources:
         mem_swap=110,
         runtime=300,
+    params:
+        timestamp="{timestamp}",
+        datatype="{datatype}",
+        ro_input=lambda _, input: ro(input),
     shell:
         execenv_pyexe(config, "build-tier-raw-orca") + "--log {log} "
         f"--configs {ro(configs)} "
@@ -56,10 +56,6 @@ rule build_raw_fcio:
     """
     input:
         get_pattern_tier_daq(config, extension="fcio"),
-    params:
-        timestamp="{timestamp}",
-        datatype="{datatype}",
-        ro_input=lambda _, input: ro(input),
     output:
         get_pattern_tier(config, "raw", check_in_cycle=check_in_cycle),
     log:
@@ -69,6 +65,10 @@ rule build_raw_fcio:
     resources:
         mem_swap=110,
         runtime=300,
+    params:
+        timestamp="{timestamp}",
+        datatype="{datatype}",
+        ro_input=lambda _, input: ro(input),
     shell:
         execenv_pyexe(config, "build-tier-raw-fcio") + "--log {log} "
         f"--configs {ro(configs)} "
@@ -84,10 +84,6 @@ rule build_raw_llamadaq:
     """
     input:
         get_pattern_tier_daq(config, extension="llamadaq"),
-    params:
-        timestamp="{timestamp}",
-        datatype="{datatype}",
-        ro_input=lambda _, input: ro(input),
     output:
         get_pattern_tier(config, "raw", check_in_cycle=check_in_cycle),
     log:
@@ -97,6 +93,10 @@ rule build_raw_llamadaq:
     resources:
         mem_swap=110,
         runtime=300,
+    params:
+        timestamp="{timestamp}",
+        datatype="{datatype}",
+        ro_input=lambda _, input: ro(input),
     shell:
         execenv_pyexe(config, "build-tier-raw-llamadaq") + "--log {log} "
         f"--configs {ro(configs)} "
@@ -112,16 +112,16 @@ rule build_raw_mgdo:
     """
     input:
         get_pattern_tier_daq(config, extension="mgdo"),
-    params:
-        timestamp="{timestamp}",
-        datatype="{datatype}",
-        ro_input=lambda _, input: ro(input),
     output:
         get_pattern_tier(config, "raw", check_in_cycle=check_in_cycle),
     log:
         get_pattern_log(config, "tier_raw", time),
     group:
         "tier-raw"
+    params:
+        timestamp="{timestamp}",
+        datatype="{datatype}",
+        ro_input=lambda _, input: ro(input),
     shell:
         execenv_pyexe(config, "build-tier-raw-mgdo") + "--log {log} "
         f"--configs {ro(configs)} "
@@ -135,16 +135,13 @@ rule build_raw_blind:
     """
     This rule runs the data blinding, it takes in the raw file, calibration curve stored in the overrides
     and runs only if the blinding check file is on disk. Output is just the blinded raw file.
+
     """
     input:
         tier_file=str(get_pattern_tier(config, "raw", check_in_cycle=False)).replace(
             "{datatype}", "phy"
         ),
         blind_file=lambda wildcards: get_blinding_check_file(wildcards, raw_par_catalog),
-    params:
-        timestamp="{timestamp}",
-        datatype="phy",
-        ro_input=lambda _, input: {k: ro(v) for k, v in input.items()},
     output:
         get_pattern_tier_raw_blind(config),
     log:
@@ -156,6 +153,10 @@ rule build_raw_blind:
     resources:
         mem_swap=110,
         runtime=300,
+    params:
+        timestamp="{timestamp}",
+        datatype="phy",
+        ro_input=lambda _, input: {k: ro(v) for k, v in input.items()},
     shell:
         execenv_pyexe(config, "build-tier-raw-blind") + "--log {log} "
         f"--configs {ro(configs)} "
@@ -171,16 +172,16 @@ rule build_raw_blind:
 rule build_daq_mgdo:
     input:
         get_pattern_tier_oldllamadaq(config),
-    params:
-        timestamp="{timestamp}",
-        datatype="{datatype}",
-        ro_input=lambda _, input: ro(input),
     output:
         temp(get_pattern_tier_daq(config, extension="mgdo")),
     log:
         get_pattern_log(config, "tier_daq", time),
     group:
         "tier-daq"
+    params:
+        timestamp="{timestamp}",
+        datatype="{datatype}",
+        ro_input=lambda _, input: ro(input),
     shell:
         "apptainer exec --cleanenv "
         "/mnt/atlas01/projects/scarf/software/containers/gerda-sw-all_v7.0.0.sif "

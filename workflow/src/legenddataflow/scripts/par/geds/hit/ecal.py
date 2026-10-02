@@ -68,7 +68,7 @@ def plot_2614_timemap(
             norm=LogNorm(),
         )
 
-    ticks, labels = plt.xticks()
+    ticks, _ = plt.xticks()
     plt.xlabel(
         f"Time starting : {datetime.utcfromtimestamp(ticks[0]).strftime('%d/%m/%y %H:%M')}"
     )
@@ -122,7 +122,7 @@ def plot_pulser_timemap(
             norm=LogNorm(),
         )
         plt.ylim([mean - n_spread * spread, mean + n_spread * spread])
-    ticks, labels = plt.xticks()
+    ticks, _ = plt.xticks()
     plt.xlabel(
         f"Time starting : {datetime.utcfromtimestamp(ticks[0]).strftime('%d/%m/%y %H:%M')}"
     )
@@ -263,7 +263,7 @@ def bin_survival_fraction(
         data.query(selection_string)[cal_energy_param],
         bins=np.arange(erange[0], erange[1] + dx, dx),
     )
-    counts_fail, bins_fail, _ = pgh.get_hist(
+    counts_fail, _, _ = pgh.get_hist(
         data.query(f"(~{cut_field})&(~{pulser_field})")[cal_energy_param],
         bins=np.arange(erange[0], erange[1] + dx, dx),
     )
@@ -302,7 +302,7 @@ def plot_baseline_timemap(
         norm=LogNorm(),
     )
 
-    ticks, labels = plt.xticks()
+    ticks, _ = plt.xticks()
     plt.xlabel(
         f"Time starting : {datetime.utcfromtimestamp(ticks[0]).strftime('%d/%m/%y %H:%M')}"
     )
@@ -566,7 +566,7 @@ def par_geds_hit_ecal() -> None:
     ):
         e_uncal = data.query(selection_string)[energy_param].to_numpy()
 
-        hist, bins, bar = pgh.get_hist(
+        hist, bins, _ = pgh.get_hist(
             e_uncal[
                 (e_uncal > np.nanpercentile(e_uncal, 95))
                 & (e_uncal < np.nanpercentile(e_uncal, 99.9))
@@ -653,7 +653,7 @@ def par_geds_hit_ecal() -> None:
             hit_dict.update(
                 {
                     cal_energy_param.replace("_ctc", ""): {
-                        "expression": f"where({cal_energy_param.replace('ctc','noctc')}>{kwarg_dict.get('dt_theshold_kev',100)}, {cal_energy_param}, {cal_energy_param.replace('ctc','noctc')})",
+                        "expression": f"where({cal_energy_param.replace('ctc', 'noctc')}>{kwarg_dict.get('dt_theshold_kev', 100)}, {cal_energy_param}, {cal_energy_param.replace('ctc', 'noctc')})",
                         "parameters": {},
                     }
                 }

@@ -33,10 +33,6 @@ rule build_psp:
                 config, wildcards.timestamp, "psp"
             )
         ),
-    params:
-        timestamp="{timestamp}",
-        datatype="{datatype}",
-        ro_input=lambda _, input: {k: ro(v) for k, v in input.items()},
     output:
         tier_file=get_pattern_tier(config, "psp", check_in_cycle=check_in_cycle),
         db_file=get_pattern_pars_tmp(config, "psp_db"),
@@ -47,6 +43,10 @@ rule build_psp:
     resources:
         runtime=300,
         mem_swap=lambda wildcards: 35 if wildcards.datatype == "cal" else 25,
+    params:
+        timestamp="{timestamp}",
+        datatype="{datatype}",
+        ro_input=lambda _, input: {k: ro(v) for k, v in input.items()},
     shell:
         execenv_pyexe(config, "build-tier-dsp") + "--log {log} "
         "--tier psp "

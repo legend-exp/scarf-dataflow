@@ -56,13 +56,12 @@ include: "rules/blinding_check.smk"
 
 onstart:
     print("INFO: initializing workflow")
-
     # Make sure some packages are initialized before we send jobs to avoid race conditions
     if not workflow.touch:
         shell(
-            execenv.execenv_pyexe(config, "python") + " -c 'import daq2lh5, matplotlib'"
+            execenv.execenv_pyexe(config, "python")
+            + " -c 'import daq2lh5, matplotlib'"
         )
-
     raw_par_cat_file = Path(utils.pars_path(config)) / "raw" / "validity.yaml"
     if raw_par_cat_file.is_file():
         raw_par_cat_file.unlink()

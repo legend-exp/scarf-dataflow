@@ -34,17 +34,17 @@ rule build_hit:
     output:
         tier_file=get_pattern_tier(config, "hit", check_in_cycle=check_in_cycle),
         db_file=get_pattern_pars_tmp(config, "hit_db"),
-    params:
-        timestamp="{timestamp}",
-        datatype="{datatype}",
-        tier="hit",
-        ro_input=lambda _, input: {k: ro(v) for k, v in input.items()},
     log:
         get_pattern_log(config, "tier_hit", time),
     group:
         "tier-hit"
     resources:
         runtime=300,
+    params:
+        timestamp="{timestamp}",
+        datatype="{datatype}",
+        tier="hit",
+        ro_input=lambda _, input: {k: ro(v) for k, v in input.items()},
     shell:
         execenv_pyexe(config, "build-tier-hit") + f"--configs {ro(configs)} "
         "--metadata {meta} "
