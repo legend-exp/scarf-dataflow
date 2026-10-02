@@ -15,8 +15,8 @@ paths:
   detector_db: $_/inputs/hardware/detectors
 
   tier: $_/generated/tier
-  tier_oldllamadaq: $_/../../daq
-  tier_daq: $_/../../tier1
+  tier_daq: $_/../../daq
+  tier_oldllamadaq: $_/../../tier0
   tier_raw: $_/generated/tier/raw
   tier_tcm: $_/generated/tier/tcm
   tier_dsp: $_/generated/tier/dsp
@@ -51,11 +51,11 @@ paths:
   install: $_/.snakemake/legend-dataflow/venv
 
 table_format:
-  raw: ch{ch:07d}/raw
-  dsp: ch{ch:07d}/dsp
-  psp: ch{ch:07d}/dsp
-  hit: ch{ch:07d}/hit
-  pht: ch{ch:07d}/hit
+  raw: ch{ch:03d}/raw
+  dsp: ch{ch:03d}/dsp
+  psp: ch{ch:03d}/dsp
+  hit: ch{ch:03d}/hit
+  pht: ch{ch:03d}/hit
   evt: "{grp}/evt"
   pet: "{grp}/evt"
   skm: "{grp}/skm"
