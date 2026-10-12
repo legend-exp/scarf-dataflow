@@ -56,7 +56,7 @@ dependencies = [
     "pygama>=2.0.5",
     "dspeed>=1.6",
     "legend-pydataobj>=1.11.6",
-    # "legend-daq2lh5@git+https://github.com/ManuelHu/legend-daq2lh5#egg=llama-timestamp"
+    # "legend-daq2lh5@git+https://github.com/legend-exp/legend-daq2lh5"
     "legend-daq2lh5",
     "pip",
 ]
@@ -125,7 +125,7 @@ par-spms-dsp-trg-thr    = "legenddataflow.scripts.par.spms.dsp.trigger_threshold
 exclude = ["generated", "inputs", "software", "workflow"]
 
 [tool.uv.sources]
-legend-daq2lh5 = { git = "https://github.com/ManuelHu/legend-daq2lh5", rev = "llama-timestamp" }
+legend-daq2lh5 = { git = "https://github.com/legend-exp/legend-daq2lh5", rev = "0baafb4486bfddc5880bd0a5fb15e0441638a3a5" }
 
 [tool.uv]
 default-groups = []
