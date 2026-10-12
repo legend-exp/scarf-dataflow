@@ -56,14 +56,15 @@ dependencies = [
     "pygama>=2.0.5",
     "dspeed>=1.6",
     "legend-pydataobj>=1.11.6",
-    "legend-daq2lh5>=1.5.0",
+    # "legend-daq2lh5@git+https://github.com/legend-exp/legend-daq2lh5"
+    "legend-daq2lh5",
     "pip",
 ]
 
 [project.optional-dependencies]
 # these are needed to run the data production
 runprod = [
-    "snakemake>=8.16",
+    "snakemake==9.9.0",
 ]
 test = [
     "legend_dataflow[runprod]",
@@ -122,6 +123,9 @@ par-spms-dsp-trg-thr    = "legenddataflow.scripts.par.spms.dsp.trigger_threshold
 
 [tool.uv.workspace]
 exclude = ["generated", "inputs", "software", "workflow"]
+
+[tool.uv.sources]
+legend-daq2lh5 = { git = "https://github.com/legend-exp/legend-daq2lh5", rev = "0baafb4486bfddc5880bd0a5fb15e0441638a3a5" }
 
 [tool.uv]
 default-groups = []

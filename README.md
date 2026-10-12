@@ -11,5 +11,5 @@ $ uv venv --python 3.12
 $ source .venv/bin/activate
 $ uv pip install '.[runprod]'
 $ dataprod -v install -s sator dataflow-config.yaml
-$ snakemake --workflow-profile workflow/profiles/sator-build-raw 'all-sp04-*-raw.gen'
+$ snakemake --workflow-profile workflow/profiles/sator-build-raw 'all-sp05-*-raw.gen'
 ```
